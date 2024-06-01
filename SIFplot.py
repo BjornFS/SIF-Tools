@@ -3,8 +3,7 @@ from scipy.interpolate import interp1d
 
 import os
 import numpy as np
-import utils
-import re
+from utils import MATH, FILE
 
 
 from CommandLineInterface import CLI
@@ -15,14 +14,14 @@ class SIFplot:
     def single(paths: list[str], window:str = 'full', reduce_noise:bool = False):
         plt.figure()
         for path in paths:
-            data, _ = utils.parse(path)
+            data, _ = FILE.parse(path)
 
-            data = utils.slice_window(data, window=window)
+            data = MATH.slice_window(data, window=window)
 
             wavelengths, counts = data[:, 0], data[:, 1]
 
             if reduce_noise:
-                wavelengths, counts = utils.gradient_n_sigma(wavelengths, counts)
+                wavelengths, counts = MATH.gradient_n_sigma(wavelengths, counts)
 
             filename = os.path.basename(path)
             plt.plot(wavelengths, counts, label=filename)
@@ -35,12 +34,12 @@ class SIFplot:
     @staticmethod
     def batch(paths: list[str], window:str = 'full', reduce_noise:bool = False):
         for path in paths:
-            data, _ = utils.parse(path)
+            data, _ = FILE.parse(path)
             wavelengths, counts = data[:, 0], data[:, 1]
-            data = utils.slice_window(data, window=window)
+            data = MATH.slice_window(data, window=window)
             wavelengths, counts = data[:, 0], data[:, 1]
             if reduce_noise:
-                wavelengths, counts = utils.gradient_n_sigma(wavelengths, counts)
+                wavelengths, counts = MATH.gradient_n_sigma(wavelengths, counts)
             filename = os.path.basename(path)
             plt.figure()
             plt.plot(wavelengths, counts, label=filename)
@@ -52,55 +51,36 @@ class SIFplot:
 
     @staticmethod
     def hyperspectrum(directory: list[str], window:str = 'SHG', reduce_noise:bool = False, colorscheme:str = 'Blues'):
-        
-        def extract_positions(files):
-            # Regular expression pattern to match the image number and coordinates
-            pattern = re.compile(r'_(\d+)_([0-9.]+)_([0-9.]+)_')
-            # Extract the information
-            extracted_params = [pattern.search(file).groups() for file in files]
-            return extracted_params
-    
-        def normalize_array(array):
-            array_min = np.min(array)
-            array_max = np.max(array)
-            
-            # Avoid division by zero in case the array is constant
-            if array_max - array_min == 0:
-                return np.zeros_like(array)
-            
-            normalized_array = (array - array_min) / (array_max - array_min)
-            return normalized_array
 
         if os.path.isfile(directory[0]):
             print("Please dump entire folder instead.")
             return
         else:
-            files = utils.extract_files_from_folder(directory)
+            files = FILE.extract_files_from_folder(directory[0])
 
         background_file = CLI.menu_select(files)
         files.remove(background_file)
         
         # Extract positions and sort files based on positions
-        positions = extract_positions(files)
+        positions = FILE.extract_positions(files)
 
         # Parse and process the background file
-        background_data, _ = utils.parse(os.path.join(directory[0], background_file))
-        background_data = utils.slice_window(background_data, window=window)
+        background_data, _ = FILE.parse(os.path.join(directory[0], background_file))
+        background_data = MATH.slice_window(background_data, window=window)
         bg_wavelengths, bg_counts = background_data[:, 0], background_data[:, 1]
 
         if reduce_noise:
-            bg_wavelengths, bg_counts = utils.gradient_n_sigma(bg_wavelengths, bg_counts)
+            bg_wavelengths, bg_counts = MATH.gradient_n_sigma(bg_wavelengths, bg_counts)
         
         pixels = []
         for file in files:
-            print(file)
-            data, _ = utils.parse(os.path.join(directory[0], file))
+            data, _ = FILE.parse(os.path.join(directory[0], file))
 
-            data = utils.slice_window(data, window=window)
+            data = MATH.slice_window(data, window=window)
             wavelengths, counts = data[:, 0], data[:, 1]
 
             if reduce_noise:
-                wavelengths, counts = utils.gradient_n_sigma(wavelengths, counts)
+                wavelengths, counts = MATH.gradient_n_sigma(wavelengths, counts)
             
             # Interpolate background counts to match the wavelengths of the current data
             bg_interp = interp1d(bg_wavelengths, bg_counts, kind='linear', bounds_error=False, fill_value=0)
@@ -111,7 +91,7 @@ class SIFplot:
             
             pixels.append(int(np.sum(adjusted_counts)))
         
-        normalized_pixels = normalize_array(np.array(pixels))
+        normalized_pixels = MATH.normalize_array(np.array(pixels))
     
 
         # Create a dictionary to hold the pixel values by position
@@ -145,7 +125,7 @@ class SIFplot:
             return
             
         for i, path in enumerate(paths):
-            data, _ = utils.parse(path)
+            data, _ = FILE.parse(path)
             file_name = os.path.join(loc, f"arr{i+1}.csv")
             np.savetxt(file_name, data, delimiter=",", header="Wavelength,Counts", comments='')
             print(f"Array for {path} saved to {file_name}")
