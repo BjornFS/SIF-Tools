@@ -1,5 +1,5 @@
-from CommandLineTools import CLT
-from CommandLineInterface import CLI
+from CommandLine.CommandLineTools import CLT
+from CommandLine.CommandLineInterface import CLI
 
 def main():
     while True:

@@ -6,14 +6,14 @@ with open('README.md', 'r') as f:
 
 
 setup(
-    name='sif-toolkit',  # Replace with your package name
+    name='sif_tools',  # Replace with your package name
     version='0.1.0',  # Initial version of your package
     author='Bjorn F. Schroder N.',  # Replace with your name
     author_email='Bjornfschroder@gmail.com',  # Replace with your email
-    description='A light-weight package for SIF file analysis',  # Brief description of the package
+    description='A light-weight package for Andor SIF file analysis',  # Brief description of the package
     long_description=long_description,
     long_description_content_type='text/markdown',
-    url='https://github.com/BjornFS/sif-toolkit',  # Replace with the URL of your package's repository
+    url='https://github.com/BjornFS/SIF-Tools',  # Replace with the URL of your package's repository
     packages=find_packages(),  # Automatically find packages in the same directory
     classifiers=[
         'Programming Language :: Python :: 3',  # Supported Python version
