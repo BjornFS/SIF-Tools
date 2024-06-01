@@ -4,13 +4,60 @@ from scipy.interpolate import interp1d
 import os
 import numpy as np
 
-from utils import MATH, FILE
-from CommandLine.CommandLineInterface import CLI
+try:
+    from utils import MATH, FILE
+except:
+    try:
+        from .utils import MATH, FILE
+    except:
+        raise
+
+
+try:
+    from CommandLine.CommandLineInterface import CLI
+except ImportError:
+    try:
+        from .CommandLine.CommandLineInterface import CLI
+    except ImportError:
+        raise
 
 
 class SIFplot:
+    """
+    A class for handling and plotting Spectral Intensity Function (SIF) data.
+
+    This class provides static methods to:
+    - Plot a single spectrum or multiple spectra in a single plot.
+    - Plot each spectrum in a separate plot.
+    - Generate a heatmap from hyperspectral data.
+    - Convert SIF files to CSV format.
+
+    Methods:
+        single(paths: list[str], window: str = 'full', reduce_noise: bool = False):
+            Plots a single spectrum or multiple spectra in a single plot.
+
+        batch(paths: list[str], window: str = 'full', reduce_noise: bool = False):
+            Plots each spectrum in a separate plot.
+
+        hyperspectrum(directory: list[str], window: str = 'SHG', reduce_noise: bool = False, colorscheme: str = 'Blues'):
+            Generates a heatmap from hyperspectral data.
+
+        sif2csv(paths: list[str], loc: str):
+            Converts SIF files to CSV format and saves them to a specified location.
+    """
     @staticmethod
     def single(paths: list[str], window:str = 'full', reduce_noise:bool = False):
+        """
+        Plots a single spectrum or multiple spectra in a single plot.
+
+        Args:
+            paths (list[str]): List of file paths or a directory containing spectrum files.
+            window (str, optional): The window of data to be sliced for plotting. Defaults to 'full'.
+            reduce_noise (bool, optional): Whether to reduce noise in the data. Defaults to False.
+
+        Returns:
+            None
+        """
 
         if os.path.isfile(paths[0]):
             pass
@@ -40,6 +87,17 @@ class SIFplot:
 
     @staticmethod
     def batch(paths: list[str], window:str = 'full', reduce_noise:bool = False):
+        """
+        Plots each spectrum in a separate plot.
+
+        Args:
+            paths (list[str]): List of file paths or a directory containing spectrum files.
+            window (str, optional): The window of data to be sliced for plotting. Defaults to 'full'.
+            reduce_noise (bool, optional): Whether to reduce noise in the data. Defaults to False.
+
+        Returns:
+            None
+        """
         
         if os.path.isfile(paths[0]):
             pass
@@ -66,7 +124,18 @@ class SIFplot:
 
     @staticmethod
     def hyperspectrum(directory: list[str], window:str = 'SHG', reduce_noise:bool = False, colorscheme:str = 'Blues'):
+        """
+        Generates a heatmap from hyperspectral data.
 
+        Args:
+            directory (list[str]): Directory containing spectrum files.
+            window (str, optional): The window of data to be sliced for plotting. Defaults to 'SHG'.
+            reduce_noise (bool, optional): Whether to reduce noise in the data. Defaults to False.
+            colorscheme (str, optional): Color scheme for the heatmap. Defaults to 'Blues'.
+
+        Returns:
+            None
+        """
         if os.path.isfile(directory[0]):
             print("Please dump entire folder, not individual files.")
             return
@@ -136,6 +205,16 @@ class SIFplot:
     
     @staticmethod
     def sif2csv(paths: list[str], loc: str):
+        """
+        Converts SIF files to CSV format and saves them to a specified location.
+
+        Args:
+            paths (list[str]): List of file paths or a directory containing SIF files.
+            loc (str): Location to save the CSV files.
+
+        Returns:
+            None
+        """
         if not os.path.exists(loc):
             print('Files could not be saved: Location does not exist.')
             return

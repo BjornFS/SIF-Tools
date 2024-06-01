@@ -26,4 +26,9 @@ setup(
         'numpy',  
         'scipy',
     ],
+    entry_points={
+        'console_scripts': [
+            'sif-tools=sif_tools.__main__:main',
+        ],
+    },
 )

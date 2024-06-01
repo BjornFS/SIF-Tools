@@ -1,7 +1,10 @@
-from CommandLine.CommandLineTools import CLT
-from CommandLine.CommandLineInterface import CLI
+from sif_tools.CommandLine.CommandLineTools import CLT
+from sif_tools.CommandLine.CommandLineInterface import CLI
 
 def main():
+    """
+    main for CLI
+    """
     while True:
         run_program()
 

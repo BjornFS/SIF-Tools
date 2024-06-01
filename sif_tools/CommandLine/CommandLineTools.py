@@ -1,6 +1,6 @@
 import re
 
-from SIFplot import SIFplot
+from ..SIFplot import SIFplot
 from .CommandLineInterface import CLI
 
 class CLT:
