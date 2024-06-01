@@ -3,9 +3,8 @@ from scipy.interpolate import interp1d
 
 import os
 import numpy as np
+
 from utils import MATH, FILE
-
-
 from CommandLineInterface import CLI
 
 

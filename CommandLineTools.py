@@ -1,4 +1,5 @@
 import re
+
 from SIFplot import SIFplot
 from CommandLineInterface import CLI
 

@@ -1,8 +1,10 @@
 import typing
-import numpy as np
 import re
 import os
 from collections import OrderedDict
+
+import numpy as np
+
 from SIFopen import read_file
 
 

@@ -1,6 +1,8 @@
 import warnings
-import numpy as np
 from collections import OrderedDict
+
+import numpy as np
+
 
 # Read Andor Technology Multi-Channel files with PIL.
 # Based on Marcel Leutenegger's MATLAB script.
