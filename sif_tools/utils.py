@@ -5,7 +5,13 @@ from collections import OrderedDict
 
 import numpy as np
 
-from .SIFopen import read_file
+try:
+    from .SIFopen import read_file
+except:
+    try:
+        from SIFopen import read_file
+    except:
+        raise
 
 
 class FILE:

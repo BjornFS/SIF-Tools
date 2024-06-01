@@ -91,6 +91,7 @@ class CLI:
            path to save the file(s) to.
         """
         print(help_text)
+        input("\nPress any key to return to menu...")
 
     @staticmethod
     def display_files(position, files):
