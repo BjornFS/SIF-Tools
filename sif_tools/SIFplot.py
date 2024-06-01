@@ -16,24 +16,24 @@ class SIFplot:
             pass
         else:
             paths = FILE.extract_files_from_folder(paths[0])
+            
+        plt.figure()
+        for path in paths:
+            data, _ = FILE.parse(path)
 
-            plt.figure()
-            for path in paths:
-                data, _ = FILE.parse(path)
+            data = MATH.slice_window(data, window=window)
 
-                data = MATH.slice_window(data, window=window)
+            wavelengths, counts = data[:, 0], data[:, 1]
 
-                wavelengths, counts = data[:, 0], data[:, 1]
+            if reduce_noise:
+                wavelengths, counts = MATH.gradient_n_sigma(wavelengths, counts)
 
-                if reduce_noise:
-                    wavelengths, counts = MATH.gradient_n_sigma(wavelengths, counts)
-
-                filename = os.path.basename(path)
-                plt.plot(wavelengths, counts, label=filename)
-            plt.legend(fontsize='small')  # Decrease the font size of the legend
-            plt.xlabel("Wavelength")
-            plt.ylabel("Counts")
-            plt.show()
+            filename = os.path.basename(path)
+            plt.plot(wavelengths, counts, label=filename)
+        plt.legend(fontsize='small')  # Decrease the font size of the legend
+        plt.xlabel("Wavelength")
+        plt.ylabel("Counts")
+        plt.show()
 
         return
         
@@ -153,5 +153,5 @@ class SIFplot:
             # Combine with the location path
             file_name = os.path.join(loc, file_name)
             np.savetxt(file_name, data, delimiter=",", header="Wavelength,Counts", comments='')
-            
+
         return
