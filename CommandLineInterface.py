@@ -51,7 +51,7 @@ class CLI:
         print("[plot]\t\t\t-plot")
         print("[batchjob]\t\t-batch")
         print("[hyperspectrum]\t\t-hyperspectrum")
-        print("[sif-2-array]\t\t-convert")
+        print("[sif-2-csv]\t\t-convert")
     
     @staticmethod
     def display_help():

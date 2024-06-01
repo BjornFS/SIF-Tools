@@ -16,8 +16,6 @@ SIF-Toolkit is a Python toolkit designed to read `.sif` data files from an Andor
 
 ## Installation
 
-You can clone the repository:
-
 ```bash
 git clone https://github.com/BjornFS/SIF-Toolkit.git
 ```
@@ -26,21 +24,20 @@ git clone https://github.com/BjornFS/SIF-Toolkit.git
 
 ### Importing SIF-Toolkit in a Python Script
 
-A specific class ```SIFpy``` has been written for the purposes of direct scripting.
+A specific class ```SIFpy``` has been written for the purposes of in-script parsing.
 
 It can be called in the following way
-```
+```python 
 from SIFpy import sif2array
 import os
 
 file = os.path.abspath('/Users/user/location/file.sif')
 data = sif2array(target=file, reduce_noise=False, window='narrow').get_data()
-print(data)
 ```
 
 ### Running SIF-Toolkit from the Command Line
 
-The code can also be from the command line:
+A client has been included, consisting of ```CommandLineInterface``` & ```CommandLineTools```, which is run from ```__main__.py``` 
 
 ```bash
 python3 dir/SIF-Toolkit
@@ -48,21 +45,56 @@ python3 dir/SIF-Toolkit
 
 This will execute the default command-line interface, providing a quick way to process and visualize your `.sif` data.
 
-## Command Line Tools
+Once booted, the user will be met with:
 
-SIF-Toolkit includes several command-line tools for specific tasks. Here are a few examples:
+```
+                    _            _____                         
+    /\             | |          |  __ \                        
+   /  \   _ __   __| | ___  _ __| |__) |_ _ _ __ ___  ___ _ __ 
+  / /\ \ | '_ \ / _` |/ _ \| '__|  ___/ _` | '__/ __|/ _ \ '__|
+ / ____ \| | | | (_| | (_) | |  | |  | (_| | |  \__ \  __/ |   
+/_/    \_\_| |_|\__,_|\___/|_|  |_|   \__,_|_|  |___/\___|_|   
+                                                               
 
-- **Open a .sif file and print metadata:**
+This software is released as free-use.
+May 2024        Version 1.1
+Author: Bjørn Funch Schrøder Nielsen @ bjornfschroder@gmail.com
 
-```bash
-python CommandLineTools.py open path_to_your_file.sif
+--- A program to read and plot Andor Technology Multi-Channel files (.sif) ---
+
+Available commands:
+[help]          -help
+[plot]          -plot
+[batchjob]      -batch
+[hyperspectrum] -hyperspectrum
+[sif-2-csv]     -convert
+
+
+>>> _
 ```
 
-- **Plot data from a .sif file:**
+## Command Line Interface
+
+SIF-Toolkit includes several command-line tools for specific tasks. The files themselves can be explicitly written, or drag-and-dropped into the command line. Here are a few examples:
+
+- **Create a single plot, using one or more files:**
 
 ```bash
-python CommandLineTools.py plot path_to_your_file.sif
+-plot -window = narrow -reduce_noise /Users/user/location/file.sif
 ```
+
+- **Plot as individual plots, using one or more files**
+
+```bash
+-batch -window = narrow -reduce_noise /Users/user/location/file.sif
+```
+
+- **Plot 2D heatmap of collection of files:**
+```bash
+-hyperspectrum -window = narrow -reduce_noise /Users/user/folder/
+```
+
+etc.
 
 ## Support
 
