@@ -34,9 +34,6 @@ class SIFplot:
             plt.xlabel("Wavelength")
             plt.ylabel("Counts")
             plt.show()
-        
-
-
 
         return
         
@@ -156,4 +153,5 @@ class SIFplot:
             # Combine with the location path
             file_name = os.path.join(loc, file_name)
             np.savetxt(file_name, data, delimiter=",", header="Wavelength,Counts", comments='')
+            
         return
