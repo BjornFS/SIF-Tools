@@ -16,38 +16,34 @@ SIF-Toolkit is a Python toolkit designed to read `.sif` data files from an Andor
 
 ## Installation
 
-You can clone the repository and install it manually:
+You can clone the repository:
 
 ```bash
-git clone https://github.com/yourusername/SIF-Toolkit.git
+git clone https://github.com/BjornFS/SIF-Toolkit.git
 ```
 
 ## Usage
 
 ### Importing SIF-Toolkit in a Python Script
 
-```python
-from SIFopen import SIFFile
-from SIFplot import plot_sif_data
-import utils
+A specific class ```SIFpy``` has been written for the purposes of direct scripting.
 
-# Load a .sif file
-sif_file = SIFFile('path_to_your_file.sif')
+It can be called in the following way
+```
+from SIFpy import sif2array
+import os
 
-# Access data
-data = sif_file.get_data()
-
-# Process data (example: normalize)
-normalized_data = utils.normalize(data)
-
-# Plot data
-plot_sif_data(normalized_data)
+file = os.path.abspath('/Users/user/location/file.sif')
+data = sif2array(target=file, reduce_noise=False, window='narrow').get_data()
+print(data)
 ```
 
 ### Running SIF-Toolkit from the Command Line
 
+The code can also be from the command line:
+
 ```bash
-python CommandLineInterface.py path_to_your_file.sif
+python3 dir/SIF-Toolkit
 ```
 
 This will execute the default command-line interface, providing a quick way to process and visualize your `.sif` data.
