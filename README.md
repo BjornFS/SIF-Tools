@@ -12,7 +12,7 @@ This Toolkit is borrows, and is adapted, from [sif_parser](https://github.com/fu
 
 ## Requirements
 
-- Python 3.x
+- Python >= 3.6
 - NumPy
 - Matplotlib
 
