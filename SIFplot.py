@@ -12,27 +12,44 @@ from CommandLineInterface import CLI
 class SIFplot:
     @staticmethod
     def single(paths: list[str], window:str = 'full', reduce_noise:bool = False):
-        plt.figure()
-        for path in paths:
-            data, _ = FILE.parse(path)
 
-            data = MATH.slice_window(data, window=window)
+        if os.path.isfile(paths[0]):
+            pass
+        else:
+            paths = FILE.extract_files_from_folder(paths[0])
 
-            wavelengths, counts = data[:, 0], data[:, 1]
+            plt.figure()
+            for path in paths:
+                data, _ = FILE.parse(path)
 
-            if reduce_noise:
-                wavelengths, counts = MATH.gradient_n_sigma(wavelengths, counts)
+                data = MATH.slice_window(data, window=window)
 
-            filename = os.path.basename(path)
-            plt.plot(wavelengths, counts, label=filename)
-        plt.legend(fontsize='small')  # Decrease the font size of the legend
-        plt.xlabel("Wavelength")
-        plt.ylabel("Counts")
-        plt.show()
+                wavelengths, counts = data[:, 0], data[:, 1]
+
+                if reduce_noise:
+                    wavelengths, counts = MATH.gradient_n_sigma(wavelengths, counts)
+
+                filename = os.path.basename(path)
+                plt.plot(wavelengths, counts, label=filename)
+            plt.legend(fontsize='small')  # Decrease the font size of the legend
+            plt.xlabel("Wavelength")
+            plt.ylabel("Counts")
+            plt.show()
+        
+
+
+
+        return
         
 
     @staticmethod
     def batch(paths: list[str], window:str = 'full', reduce_noise:bool = False):
+        
+        if os.path.isfile(paths[0]):
+            pass
+        else:
+            paths = FILE.extract_files_from_folder(paths[0])
+
         for path in paths:
             data, _ = FILE.parse(path)
             wavelengths, counts = data[:, 0], data[:, 1]
@@ -49,11 +66,13 @@ class SIFplot:
             plt.title(f"Plot of {filename}")
             plt.show()
 
+        return
+
     @staticmethod
     def hyperspectrum(directory: list[str], window:str = 'SHG', reduce_noise:bool = False, colorscheme:str = 'Blues'):
 
         if os.path.isfile(directory[0]):
-            print("Please dump entire folder instead.")
+            print("Please dump entire folder, not individual files.")
             return
         else:
             files = FILE.extract_files_from_folder(directory[0])
@@ -116,16 +135,26 @@ class SIFplot:
         plt.title('Heatmap of Hyperspectral Data')
         plt.show()
 
+        return
 
     
     @staticmethod
-    def sif2array(paths: list[str], loc: str):
+    def sif2csv(paths: list[str], loc: str):
         if not os.path.exists(loc):
             print('Files could not be saved: Location does not exist.')
             return
+        
+        if os.path.isfile(paths[0]):
+            pass
+        else:
+            paths = FILE.extract_files_from_folder(paths[0])
             
         for i, path in enumerate(paths):
+            print(path)
             data, _ = FILE.parse(path)
-            file_name = os.path.join(loc, f"arr{i+1}.csv")
+            # Get the base filename without extension and add .csv
+            file_name = os.path.splitext(os.path.basename(path))[0] + ".csv"
+            # Combine with the location path
+            file_name = os.path.join(loc, file_name)
             np.savetxt(file_name, data, delimiter=",", header="Wavelength,Counts", comments='')
-            print(f"Array for {path} saved to {file_name}")
+        return

@@ -185,4 +185,3 @@ class MATH:
         
         normalized_array = (array - array_min) / (array_max - array_min)
         return normalized_array
-    
