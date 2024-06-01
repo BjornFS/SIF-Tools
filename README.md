@@ -58,7 +58,7 @@ Once booted, the user will be met with:
 /_/    \_\_| |_|\__,_|\___/|_|  |_|   \__,_|_|  |___/\___|_|   
                                                                
 
-This software is released as free-use.
+This software is released under MPL-2.0
 May 2024        Version 1.1
 Author: Bjørn Funch Schrøder Nielsen @ bjornfschroder@gmail.com
 

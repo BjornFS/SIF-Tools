@@ -36,7 +36,7 @@ class CLI:
         """
         Display information about the program.
         """
-        print("\nThis software is released as free use.")
+        print("\nThis software is released under MPL-2.0")
         print("May 2024 \t Version 1.1")
         print("Author: Bjørn Funch Schrøder Nielsen @ bjornfschroder@gmail.com\n")
         print("--- A program to read and plot Andor Technology Multi-Channel files (.sif) ---\n")
