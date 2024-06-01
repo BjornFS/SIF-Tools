@@ -1,7 +1,7 @@
 import re
 
 from SIFplot import SIFplot
-from CommandLineInterface import CLI
+from CommandLine.CommandLineInterface import CLI
 
 class CLT:
     @staticmethod

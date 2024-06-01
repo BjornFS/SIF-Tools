@@ -24,5 +24,6 @@ setup(
     install_requires=[
         'matplotlib',  # Include matplotlib
         'numpy',  # Include numpy
+        'scipy', # Include scipy
     ],
 )
