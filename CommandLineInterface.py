@@ -1,12 +1,24 @@
 import os, sys
 
 class CLI:
+    """
+    Command Line Interface (CLI) for displaying program information and handling user inputs.
+
+    This class provides methods to initialize the program window, display headers, 
+    program information, available commands, help information, and handle file selection.
+    """
     @staticmethod
     def intialise_program_window():
+        """
+        Clear the console window.
+        """
         os.system('cls' if os.name == 'nt' else 'clear')
 
     @staticmethod
     def display_program_header():
+        """
+        Display the program header.
+        """
         header = (
             "                     _            _____                         \n"
             "     /\             | |          |  __ \                        \n"
@@ -21,6 +33,9 @@ class CLI:
 
     @staticmethod
     def display_program_info():
+        """
+        Display information about the program.
+        """
         print("\nThis software is released as free use.")
         print("May 2024 \t Version 1.1")
         print("Author: Bjørn Funch Schrøder Nielsen @ bjornfschroder@gmail.com\n")
@@ -28,6 +43,9 @@ class CLI:
 
     @staticmethod
     def display_commands():
+        """
+        Display the available commands.
+        """
         print("Available commands:")
         print("[help]\t\t\t-help")
         print("[plot]\t\t\t-plot")
@@ -37,6 +55,9 @@ class CLI:
     
     @staticmethod
     def display_help():
+        """
+        Display help information for the available commands.
+        """
         CLI.intialise_program_window()
         CLI.display_program_header()
         
@@ -73,6 +94,17 @@ class CLI:
 
     @staticmethod
     def display_files(position, files):
+        """
+        Display a list of files with a selector.
+
+        Parameters
+        ----------
+        position : int
+            The current position of the selector.
+        
+        files : List[str]
+            A list of file names to display.
+        """
         os.system('cls' if os.name == 'nt' else 'clear')  # Clear the console
         CLI.display_program_header()
         print('Select background data:\n')
@@ -85,6 +117,14 @@ class CLI:
         print("\n")
         
     def get_key():
+        """
+        Get a key press from the user.
+
+        Returns
+        -------
+        str
+            The key pressed by the user. Possible values are 'UP', 'DOWN', 'ENTER'.
+        """
         if os.name == 'nt':
             import msvcrt
             while True:
@@ -118,6 +158,19 @@ class CLI:
                 return 'ENTER'
 
     def menu_select(files):
+        """
+        Display a menu to select a file.
+
+        Parameters
+        ----------
+        files : List[str]
+            A list of file names to display.
+
+        Returns
+        -------
+        str
+            The selected file name.
+        """
         position = 0
         while True:
             CLI.display_files(position, files)
