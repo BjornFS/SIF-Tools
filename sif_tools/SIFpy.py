@@ -1,36 +1,53 @@
 import os
 import numpy as np
 
-from utils import MATH, FILE
+from .utils import MATH, FILE
 
-class sif2array:
-    def __init__(self, target, reduce_noise=False, window=None):
-        # Check if the target is a file or a directory
-        if os.path.isfile(target):
-            paths = [target]
-        else:
-            paths = FILE.extract_files_from_folder(target)
+def sif2array(target, reduce_noise=False, window=None):
+    """
+    Convert SIF (Spectral Image Format) files to a NumPy array.
 
-        data_list = []
+    This function processes SIF files from a given target (file or directory),
+    optionally reduces noise, and slices the data to a specified window.
 
-        for path in paths:
-            data, _ = FILE.parse(path)
+    Parameters:
+    ----------
+    target : str
+        Path to a SIF file or a directory containing SIF files.
+    reduce_noise : bool, optional
+        If True, applies noise reduction to the data (default is False).
+    window : str, optional
+        Specify the window for slicing the data. If None, the full data is used (default is None).
 
-            if window:
-                data = MATH.slice_window(data, window=window)
+    Returns:
+    -------
+    numpy.ndarray
+        A NumPy array containing the combined spectral data from the SIF file(s).
+        Each row corresponds to a pair of wavelength and count.
+    """
+    # Check if the target is a file or a directory
+    if os.path.isfile(target):
+        paths = [target]
+    else:
+        paths = FILE.extract_files_from_folder(target)
 
-            wavelengths, counts = data[:, 0], data[:, 1]
+    data_list = []
 
-            if reduce_noise:
-                wavelengths, counts = MATH.gradient_n_sigma(wavelengths, counts)
+    for path in paths:
+        data, _ = FILE.parse(path)
 
-            data_list.append(np.column_stack((wavelengths, counts)))
+        if window:
+            data = MATH.slice_window(data, window=window)
 
-        # Combine all data arrays into one ndarray
-        if len(data_list) == 1:
-            self.data = data_list[0]
-        else:
-            self.data = np.vstack(data_list)
+        wavelengths, counts = data[:, 0], data[:, 1]
 
-    def get_data(self):
-        return self.data
+        if reduce_noise:
+            wavelengths, counts = MATH.gradient_n_sigma(wavelengths, counts)
+
+        data_list.append(np.column_stack((wavelengths, counts)))
+
+    # Combine all data arrays into one ndarray
+    if len(data_list) == 1:
+        return data_list[0]
+    else:
+        return np.vstack(data_list)

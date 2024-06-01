@@ -5,10 +5,32 @@ from collections import OrderedDict
 
 import numpy as np
 
-from SIFopen import read_file
+from .SIFopen import read_file
 
 
 class FILE:
+    """
+    A utility class for handling SIF file operations, including extracting calibration data, 
+    parsing SIF files, and extracting files from folders.
+
+    Methods
+    -------
+    extract_calibration(info: OrderedDict) -> typing.Optional[np.ndarray]
+        Extract calibration data from info.
+
+    parse(file: str) -> typing.Tuple[np.ndarray, OrderedDict]
+        Parse a .sif file.
+
+    extract_files_from_folder(path: str, file_extension: str = '.sif') -> typing.List[str]
+        Extract files with a specific extension from a folder.
+
+    extract_positions(files: typing.List[str]) -> typing.List[typing.Tuple[str, str, str]]
+        Extract image numbers and coordinates from filenames using a regular expression pattern.
+
+    extract_info(info: OrderedDict, show_info: str) -> None
+        Optionally print the info based on the flag show_info.
+    """
+
     def extract_calibration(info: OrderedDict) -> typing.Optional[np.ndarray]:
         """
         Extract calibration data from info.
@@ -113,7 +135,21 @@ class FILE:
 
 
 class MATH:
+    """
+    A utility class for handling mathematical operations on spectral data, including noise reduction,
+    data slicing, and normalization.
 
+    Methods
+    -------
+    gradient_n_sigma(wavelengths: np.ndarray, counts: np.ndarray, sigma: int = 3) -> typing.Tuple[np.ndarray, np.ndarray]
+        Remove spikes from data using a gradient method with n-sigma threshold.
+
+    slice_window(data: np.ndarray, window: str) -> np.ndarray
+        Parse the data and handle the specified window case.
+
+    normalize_array(array: np.ndarray) -> np.ndarray
+        Normalize an array to the range [0, 1].
+    """
     def gradient_n_sigma(wavelengths: np.ndarray, counts: np.ndarray, sigma: int = 3) -> typing.Tuple[np.ndarray, np.ndarray]:
         """
         Remove spikes from data using a gradient method with n-sigma threshold.

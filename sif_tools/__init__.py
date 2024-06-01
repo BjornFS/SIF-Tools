@@ -1,1 +1,1 @@
-from SIFpy import sif2array
+from .SIFpy import sif2array
