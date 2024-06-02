@@ -7,7 +7,7 @@ with open('README.md', 'r') as f:
 
 setup(
     name='sif_tools',  
-    version='0.1', 
+    version='0.3.0', 
     author='Bjorn F. Schroder N.', 
     author_email='Bjornfschroder@gmail.com',  
     description='A light-weight package for Andor SIF file analysis', 
@@ -32,3 +32,8 @@ setup(
         ],
     },
 )
+
+#new version:
+## change version number in setup.py
+## python setup.py sdist bdist_wheel
+## twine upload dist/* 
