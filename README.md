@@ -33,17 +33,16 @@ git clone https://github.com/BjornFS/SIF-Toolkit.git
 
 ### Importing SIF-Tools in a Python Script
 
-A specific class ```SIFpy``` has been written for the purposes of in-script parsing.
+A select group of function have been created for the purposes of python scripting.
 
-It can be called in the following way
 ```python 
-from sif_tools import sif2array
+from sif_tools import *
 
 file = '/Users/user/location/file.sif'
 data = sif2array(target=file, reduce_noise=False, window='narrow')
 ```
 
-See [examples](https://github.com/BjornFS/SIF-Tools/tree/main/examples) for more.
+See [examples](https://github.com/BjornFS/SIF-Tools/tree/main/examples) for more functions and usage.
 
 ### Running SIF-Toolkit from the Command Line
 
