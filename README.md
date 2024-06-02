@@ -43,6 +43,8 @@ file = '/Users/user/location/file.sif'
 data = sif2array(target=file, reduce_noise=False, window='narrow')
 ```
 
+See [examples](https://github.com/BjornFS/SIF-Tools/tree/main/examples) for more.
+
 ### Running SIF-Toolkit from the Command Line
 
 A client has been included, consisting of ```CommandLineInterface``` & ```CommandLineTools```, which is run from ```__main__.py``` :
