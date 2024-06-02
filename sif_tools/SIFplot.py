@@ -123,7 +123,7 @@ class SIFplot:
         return
 
     @staticmethod
-    def hyperspectrum(directory: list[str], window:str = 'SHG', reduce_noise:bool = False, colorscheme:str = 'Blues'):
+    def hyperspectrum(directory: list[str], window:str = 'pinched', reduce_noise:bool = False, colorscheme:str = 'Blues'):
         """
         Generates a heatmap from hyperspectral data.
 

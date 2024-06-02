@@ -198,22 +198,23 @@ class MATH:
             Data array to be sliced.
         
         window: str
-            Type of windowing to apply. Options are 'narrow', 'reduced', 'SHG'.
+            Type of windowing to apply. Options are 'reduced', 'narrow' and 'pinched'.
         
         Returns
         -------
         np.ndarray
             The sliced data array.
         """
-        if window == 'narrow':
+
+        if window == 'reduced':
+            remove_count = len(data) // 10
+            data = data[remove_count:-remove_count]
+        
+        elif window == 'narrow':
             remove_count = len(data) // 4
             data = data[remove_count:-remove_count]
 
-        elif window == 'reduced':
-            remove_count = len(data) // 10
-            data = data[remove_count:-remove_count]
-
-        elif window == 'SHG':
+        elif window == 'pinched':
             remove_count = len(data) // 3
             data = data[remove_count:-remove_count]
 
