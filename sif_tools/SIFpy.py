@@ -70,6 +70,18 @@ def sif2array(target:str, reduce_noise:bool=False, window:str=None):
 
 @staticmethod
 def hyperspectrum(directory:str, background:str, reduce_noise=True, window='pinched'):
+    """
+    Generates a heatmap from hyperspectral data.
+
+    Args:
+        directory (str): Directory containing spectrum files.
+        background (str): Filename of the background spectrum file.
+        reduce_noise (bool, optional): Whether to reduce noise in the data. Defaults to True.
+        window (str, optional): The window of data to be sliced for plotting. Defaults to 'pinched'.
+
+    Returns:
+        np.ndarray: A 2D array representing the heatmap data.
+    """
     
     # check if directory is directory
     if os.path.isfile(directory):
