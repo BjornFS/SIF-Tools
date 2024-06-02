@@ -7,7 +7,7 @@ with open('README.md', 'r') as f:
 
 setup(
     name='sif_tools',  
-    version='0.3.0', 
+    version='0.3.2', 
     author='Bjorn F. Schroder N.', 
     author_email='Bjornfschroder@gmail.com',  
     description='A light-weight package for Andor SIF file analysis', 
