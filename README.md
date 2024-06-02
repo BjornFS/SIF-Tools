@@ -1,6 +1,6 @@
-# SIF-Toolkit
+# SIF-Tools
 
-SIF-Toolkit is an extremely light-weight Python toolkit designed to read `.sif` data files from an Andor Solis spectrometer. This toolkit includes a set of utilities for opening, analyzing, and plotting data from `.sif` files, providing a convenient way to handle spectrometer data in scientific workflows.
+SIF-Tools is an extremely light-weight Python toolkit designed to read `.sif` data files from an Andor Solis spectrometer. This toolkit includes a set of utilities for opening, analyzing, and plotting data from `.sif` files, providing a convenient way to handle spectrometer data in scientific workflows.
 
 This Toolkit is borrows, and is adapted, from [sif_parser](https://github.com/fujiisoup/sif_parser) by [fujiisoup](https://github.com/fujiisoup). 
 
@@ -15,34 +15,40 @@ This Toolkit is borrows, and is adapted, from [sif_parser](https://github.com/fu
 - Python >= 3.6
 - NumPy
 - Matplotlib
+- Scipy
 
 ## Installation
 
+* Pip install
+```bash
+pip install sif-toolkit
+```
+
+* Clone the repository
 ```bash
 git clone https://github.com/BjornFS/SIF-Toolkit.git
 ```
 
 ## Usage
 
-### Importing SIF-Toolkit in a Python Script
+### Importing SIF-Tools in a Python Script
 
 A specific class ```SIFpy``` has been written for the purposes of in-script parsing.
 
 It can be called in the following way
 ```python 
-from SIFpy import sif2array
-import os
+from sif_tools import sif2array
 
-file = os.path.abspath('/Users/user/location/file.sif')
-data = sif2array(target=file, reduce_noise=False, window='narrow').get_data()
+file = '/Users/user/location/file.sif'
+data = sif2array(target=file, reduce_noise=False, window='narrow')
 ```
 
 ### Running SIF-Toolkit from the Command Line
 
-A client has been included, consisting of ```CommandLineInterface``` & ```CommandLineTools```, which is run from ```__main__.py``` 
+A client has been included, consisting of ```CommandLineInterface``` & ```CommandLineTools```, which is run from ```__main__.py``` :
 
 ```bash
-python3 dir/SIF-Toolkit
+sif-tools
 ```
 
 This will execute the default command-line interface, providing a quick way to process and visualize your `.sif` data.
@@ -77,7 +83,7 @@ Available commands:
 
 ## Command Line Interface
 
-SIF-Toolkit includes several command-line tools for specific tasks. The files themselves can be explicitly written, or drag-and-dropped into the command line. Here are a few examples:
+SIF-Tools includes several command-line tools for specific tasks. The files themselves can be explicitly written, or drag-and-dropped into the command line. Here are a few examples:
 
 - **Create a single plot, using one or more files:**
 
@@ -96,7 +102,11 @@ SIF-Toolkit includes several command-line tools for specific tasks. The files th
 -hyperspectrum -window = narrow -reduce_noise /Users/user/folder/
 ```
 
-etc.
+Use the command 
+```bash
+-help
+```
+for more info.
 
 ## Support
 
