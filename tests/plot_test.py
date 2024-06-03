@@ -1,5 +1,12 @@
+import sys
+import os
+
+# Ensure the parent directory is in the sys.path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 # Now you can import sif2array
-from sif_tools import hyperspectrum
+from sif_tools.SIFpy import hyperspectrum
+
 import matplotlib.pyplot as plt
 
 bg = 'BG_1s_150l.sif'

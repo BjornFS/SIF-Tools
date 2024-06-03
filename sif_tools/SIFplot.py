@@ -82,8 +82,7 @@ class SIFplot:
         plt.ylabel("Counts")
         plt.show()
 
-        return
-        
+        input("\nPress any key to return to menu...")        
 
     @staticmethod
     def batch(paths: list[str], window:str = 'full', reduce_noise:bool = False):

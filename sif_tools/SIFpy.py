@@ -69,13 +69,14 @@ def sif2array(target:str, reduce_noise:bool=False, window:str=None):
         return np.vstack(data_list)
 
 @staticmethod
-def hyperspectrum(directory:str, background:str, reduce_noise=True, window='pinched'):
+def hyperspectrum(directory: str, background: str, size=tuple[int, int], reduce_noise=True, window='pinched'):
     """
     Generates a heatmap from hyperspectral data.
 
     Args:
         directory (str): Directory containing spectrum files.
         background (str): Filename of the background spectrum file.
+        size (tuple): Distribution of images. If 25 images taken in 5x5, tuple should be (5,5).
         reduce_noise (bool, optional): Whether to reduce noise in the data. Defaults to True.
         window (str, optional): The window of data to be sliced for plotting. Defaults to 'pinched'.
 
@@ -88,6 +89,7 @@ def hyperspectrum(directory:str, background:str, reduce_noise=True, window='pinc
         raise Exception("'directory' parameter has to be a directory, not a file.")
     else:
         files = FILE.extract_files_from_folder(directory)
+        print(files)
     
     # access and treat background image
     files.remove(background) # remove background file from list of files
@@ -120,17 +122,15 @@ def hyperspectrum(directory:str, background:str, reduce_noise=True, window='pinc
         pixels.append(int(np.sum(adjusted_counts)))
     
     normalized_pixels = MATH.normalize_array(np.array(pixels))
-    # Create a dictionary to hold the pixel values by position
-    counts_by_position = {(float(pos[1]), float(pos[2])): normalized_pixels for pos, normalized_pixels in zip(positions, normalized_pixels)}
 
-    # Determine the grid size
-    max_x = int(max(float(pos[1]) for pos in positions)) + 1
-    max_y = int(max(float(pos[2]) for pos in positions)) + 1
+    # Create a 2D grid for the heatmap based on the given size
+    max_x, max_y = size
     heatmap_data = np.zeros((max_y, max_x))
 
-    # Fill the heatmap data based on the positions
-    for pos, count in counts_by_position.items():
-        x, y = int(pos[0]), int(pos[1])
+    for idx, count in zip(positions, normalized_pixels):
+        # Calculate the 2D grid position from the index
+        x = (idx - 1) % max_x
+        y = (idx - 1) // max_x
         heatmap_data[y, x] = count
 
     return heatmap_data

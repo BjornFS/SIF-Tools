@@ -117,11 +117,8 @@ class FILE:
         return [f for f in os.listdir(path) if f.endswith(file_extension)]
 
     def extract_positions(files):
-        # Regular expression pattern to match the image number and coordinates
-        pattern = re.compile(r'_(\d+)_([0-9.]+)_([0-9.]+)_')
-        # Extract the information
-        extracted_params = [pattern.search(file).groups() for file in files]
-        return extracted_params
+        # Adjust this method to return indices from filenames
+        return [int(file.split('_')[3]) for file in files]
 
     def extract_info(info: OrderedDict, show_info: str) -> None:
         """
