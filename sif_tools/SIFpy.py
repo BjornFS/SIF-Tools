@@ -134,3 +134,35 @@ def hyperspectrum(directory: str, background: str, size=tuple[int, int], reduce_
         heatmap_data[y, x] = count
 
     return heatmap_data
+
+@staticmethod
+def sif2csv(paths: list[str], loc: str):
+    """
+    Converts SIF files to CSV format and saves them to a specified location.
+
+    Args:
+        paths (list[str]): List of file paths or a directory containing SIF files.
+        loc (str): Location to save the CSV files.
+
+    Returns:
+        None
+    """
+    if not os.path.exists(loc):
+        print('Files could not be saved: Location does not exist.')
+        return
+    
+    if os.path.isfile(paths[0]):
+        pass
+    else:
+        paths = FILE.extract_files_from_folder(paths[0])
+        
+    for i, path in enumerate(paths):
+        print(path)
+        data, _ = FILE.parse(path)
+        # Get the base filename without extension and add .csv
+        file_name = os.path.splitext(os.path.basename(path))[0] + ".csv"
+        # Combine with the location path
+        file_name = os.path.join(loc, file_name)
+        np.savetxt(file_name, data, delimiter=",", header="Wavelength,Counts", comments='')
+
+    return
