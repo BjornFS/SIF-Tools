@@ -1,5 +1,4 @@
 import typing
-import re
 import os
 from collections import OrderedDict
 

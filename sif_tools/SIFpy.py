@@ -71,7 +71,7 @@ def sif2array(target:str, reduce_noise:bool=False, window:str=None):
 @staticmethod
 def hyperspectrum(directory: str, background: str, size=tuple[int, int], reduce_noise=True, window='pinched'):
     """
-    Generates a heatmap from hyperspectral data.
+    Generates heatmap from hyperspectral data.
 
     Args:
         directory (str): Directory containing spectrum files.
