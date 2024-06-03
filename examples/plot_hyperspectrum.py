@@ -1,11 +1,10 @@
-# Now you can import sif2array
 from sif_tools import hyperspectrum
 import matplotlib.pyplot as plt
 
-bg = 'BG_1s_150l.sif'
-directory = 'tests/PL_mapping240603/'
+bg = 'UnitTests/UnitTest files/test_background.sif'
+directory = 'UnitTests/UnitTest files/'
 
-data = hyperspectrum(directory = directory, background = bg, size = (5,5), reduce_noise=True, window='pinched')
+data = hyperspectrum(directory = directory, background = bg, size = (4,4), reduce_noise=True, window='pinched')
 
 # Plot the heatmap
 plt.figure(figsize=(10, 10))
