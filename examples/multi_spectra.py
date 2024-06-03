@@ -3,7 +3,7 @@ from sif_tools import sif2array
 import matplotlib.pyplot as plt
 import os
 
-files = ['folder/file1.sif', 'folder/file2.sif']
+files = ['UnitTests/UnitTest files/test_1.sif', 'UnitTests/UnitTest files/test_2.sif']
 
        
 plt.figure() # initialise plot
