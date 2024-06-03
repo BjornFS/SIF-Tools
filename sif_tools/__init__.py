@@ -1,2 +1,2 @@
-from .SPECTRAL import Hyperspectrum
-from .CONVERT import Sif2array
+from .SPECTRAL import hyperspectrum
+from .CONVERT import sif2array
