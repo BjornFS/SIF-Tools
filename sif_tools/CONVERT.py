@@ -3,7 +3,7 @@ import numpy as np
 
 from .utils import MATH, FILE
 
-class BuildArray:
+class Sif2array:
     """
     A utility class for processing SIF (Spectral Image Format) files and converting them into NumPy arrays.
 
@@ -47,7 +47,7 @@ class BuildArray:
             Each row corresponds to a pair of wavelength and count.
         """
         try:
-            paths = BuildArray._get_paths(target)
+            paths = Sif2array._get_paths(target)
 
             data_list = []
             for path in paths:

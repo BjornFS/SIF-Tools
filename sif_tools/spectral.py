@@ -4,7 +4,7 @@ from scipy.interpolate import interp1d
 
 from .utils import MATH, FILE
 
-class BuildHyperspectrum:
+class Hyperspectrum:
     """
     A utility class for generating heatmaps from hyperspectral data.
 
@@ -56,16 +56,16 @@ class BuildHyperspectrum:
             A 2D array representing the heatmap data.
         """
         try:
-            BuildHyperspectrum._validate_inputs(directory, background)
+            Hyperspectrum._validate_inputs(directory, background)
 
-            files = BuildHyperspectrum._get_files(directory, background)
-            background_data = BuildHyperspectrum._process_background(directory, background, window, reduce_noise)
+            files = Hyperspectrum._get_files(directory, background)
+            background_data = Hyperspectrum._process_background(directory, background, window, reduce_noise)
 
             positions = FILE.extract_positions(files)
-            pixels = BuildHyperspectrum._process_files(directory, files, background_data, window, reduce_noise)
+            pixels = Hyperspectrum._process_files(directory, files, background_data, window, reduce_noise)
             normalized_pixels = MATH.normalize_array(np.array(pixels))
 
-            heatmap_data = BuildHyperspectrum._create_heatmap(size, positions, normalized_pixels)
+            heatmap_data = Hyperspectrum._create_heatmap(size, positions, normalized_pixels)
 
             return heatmap_data
 
