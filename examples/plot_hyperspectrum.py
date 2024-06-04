@@ -9,7 +9,7 @@ data = hyperspectrum(directory = directory, background = bg, size = (4,4), reduc
 # Plot the heatmap
 plt.figure(figsize=(10, 10))
 plt.imshow(data, cmap='Blues', aspect='auto')
-plt.colorbar(label='Normalised Counts')
+plt.colorbar(label='Counts')
 plt.xlabel('X Position')
 plt.ylabel('Y Position')
 plt.title('Hyperspectrum')
