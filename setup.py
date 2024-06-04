@@ -7,7 +7,7 @@ with open('README.md', 'r') as f:
 
 setup(
     name='sif_tools',  
-    version='1.1.3', 
+    version='1.1.5', 
     author='Bjorn F. Schroder N.', 
     author_email='Bjornfschroder@gmail.com',  
     description='A light-weight package for Andor SIF file analysis', 
@@ -22,7 +22,6 @@ setup(
     ],
     python_requires='>=3.6', 
     install_requires=[
-        'matplotlib',
         'numpy',  
         'scipy',
     ],

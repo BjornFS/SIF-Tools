@@ -33,14 +33,31 @@ git clone https://github.com/BjornFS/SIF-Toolkit.git
 
 ### Importing SIF-Tools in a Python Script
 
-A select group of function have been created for the purposes of python scripting.
+Calling functions directly:
 
 ```python 
-from sif_tools import *
+from sif_tools import sif2array
 
 file = '/Users/user/location/file.sif'
 data = sif2array(target=file, reduce_noise=False, window='narrow')
 ```
+
+or 
+
+```python 
+from sif_tools import hyperspectrum
+
+bg = 'test_background.sif'
+directory = 'UnitTests/UnitTest files'
+
+data = hyperspectrum(directory = directory, background = bg, size = (4,4), reduce_noise=True, window='pinched')
+```
+
+which produces the data structure to create:
+
+![hyperspectrum image](examples/hyperspectrum.png)
+
+
 
 See [examples](https://github.com/BjornFS/SIF-Tools/tree/main/examples) for more functions and usage.
 

@@ -117,7 +117,9 @@ class FILE:
 
     def extract_positions(files):
         # Adjust this method to return indices from filenames
-        return [int(file.split('_')[3]) for file in files]
+        sep = [file.split('_')[-1] for file in files]
+        pos = [int(idx.split('.')[0]) for idx in sep]
+        return pos
 
     def extract_info(info: OrderedDict, show_info: str) -> None:
         """
