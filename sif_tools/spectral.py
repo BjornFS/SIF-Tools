@@ -33,7 +33,12 @@ from .utils import MATH, FILE
 
     
 @staticmethod
-def hyperspectrum(directory: str, background: str, size=tuple[int, int], reduce_noise=True, window='pinched'):
+def hyperspectrum(directory: str, 
+                  background: str, 
+                  size=tuple[int, int], 
+                  reduce_noise=True, 
+                  window='pinched', 
+                  normalize: bool = False):
     """
     Generates a heatmap from hyperspectral data.
 
@@ -49,6 +54,8 @@ def hyperspectrum(directory: str, background: str, size=tuple[int, int], reduce_
         Whether to reduce noise in the data. Defaults to True.
     - `window : str, optional`
         The window of data to be sliced for plotting. Defaults to 'pinched'.
+    - `normalize : bool, optional`
+        Whether to normalize the hyperspectrum plot data.
 
     Returns:
 
@@ -63,9 +70,11 @@ def hyperspectrum(directory: str, background: str, size=tuple[int, int], reduce_
 
         positions = FILE.extract_positions(files)
         pixels = _process_files(directory, files, background_data, window, reduce_noise)
-        normalized_pixels = MATH.normalize_array(np.array(pixels))
+        
+        if normalize:
+            pixels = MATH.normalize_array(np.array(pixels))
 
-        heatmap_data = _create_heatmap(size, positions, normalized_pixels)
+        heatmap_data = _create_heatmap(size, positions, pixels)
 
         return heatmap_data
 
