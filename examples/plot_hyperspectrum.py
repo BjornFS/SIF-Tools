@@ -4,7 +4,11 @@ import matplotlib.pyplot as plt
 bg = 'test_background.sif'
 directory = 'UnitTests/UnitTest files'
 
-data = hyperspectrum(directory = directory, background = bg, size = (4,4), reduce_noise=True, window='pinched')
+data = hyperspectrum(directory = directory, 
+                     background = bg, size = (4,4), 
+                     reduce_noise=True, 
+                     window='pinched', 
+                     normalize=False)
 
 # Plot the heatmap
 plt.figure(figsize=(10, 10))
