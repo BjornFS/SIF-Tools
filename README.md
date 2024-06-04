@@ -14,7 +14,6 @@ This Toolkit borrows, and is adapted, from [sif_parser](https://github.com/fujii
 
 - Python >= 3.6
 - NumPy
-- Matplotlib
 - Scipy
 
 ## Installation
