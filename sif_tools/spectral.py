@@ -35,7 +35,8 @@ from .utils import MATH, FILE
 @staticmethod
 def hyperspectrum(directory: str, 
                   background: str, 
-                  size=tuple[int, int], 
+                  size: tuple[int, int], 
+                  index: int,
                   reduce_noise=True, 
                   window='pinched', 
                   normalize: bool = False):
@@ -68,7 +69,7 @@ def hyperspectrum(directory: str,
         files = _get_files(directory, background)
         background_data = _process_background(directory, background, window, reduce_noise)
 
-        positions = FILE.extract_positions(files)
+        positions = FILE.extract_positions(files, _pos = index)
         pixels = _process_files(directory, files, background_data, window, reduce_noise)
         
         if normalize:

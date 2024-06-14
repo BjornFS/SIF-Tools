@@ -89,9 +89,6 @@ class FILE:
 
         flat_data = data.flatten()
 
-        if wavelengths.size != flat_data.size:
-            flat_data = data[0].flatten()
-
         df = np.column_stack((wavelengths, flat_data))
         return df, info
 
@@ -115,9 +112,9 @@ class FILE:
         """
         return [f for f in os.listdir(path) if f.endswith(file_extension)]
 
-    def extract_positions(files):
+    def extract_positions(files, _pos: int):
         # Adjust this method to return indices from filenames
-        sep = [file.split('_')[-1] for file in files]
+        sep = [file.split('_')[_pos] for file in files]
         pos = [int(idx.split('.')[0]) for idx in sep]
         return pos
 
