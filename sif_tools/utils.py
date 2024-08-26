@@ -14,43 +14,38 @@ except:
 
 
 class FILE:
-    """
-    A utility class for handling SIF file operations, including extracting calibration data, 
+    """ A utility class for handling SIF file operations, including extracting calibration data, 
     parsing SIF files, and extracting files from folders.
 
-    Methods
-    -------
-    extract_calibration(info: OrderedDict) -> typing.Optional[np.ndarray]
-        Extract calibration data from info.
+    Methods:
+    
+        extract_calibration(info)
+            Extract calibration data from info.
 
-    parse(file: str) -> typing.Tuple[np.ndarray, OrderedDict]
-        Parse a .sif file.
+        parse(file)
+            Parse a .sif file.
 
-    extract_files_from_folder(path: str, file_extension: str = '.sif') -> typing.List[str]
-        Extract files with a specific extension from a folder.
+        extract_files_from_folder(path, file_extension)
+            Extract files with a specific extension from a folder.
 
-    extract_positions(files: typing.List[str]) -> typing.List[typing.Tuple[str, str, str]]
-        Extract image numbers and coordinates from filenames using a regular expression pattern.
-
-    extract_info(info: OrderedDict, show_info: str) -> None
-        Optionally print the info based on the flag show_info.
+        extract_info(info, show_info)
+            Optionally print the info based on the flag show_info.
     """
 
     def extract_calibration(info: OrderedDict) -> typing.Optional[np.ndarray]:
-        """
-        Extract calibration data from info.
+        """ Extract calibration data from info.
 
-        Parameters
-        ----------
-        info: OrderedDict
-            OrderedDict from read_file()
+        Parameters:
 
-        Returns
-        -------
-        calibration: np.ndarray or None
-            1D array of size [width] if only one calibration is found.
-            2D array of size [NumberOfFrames x width] if multiple calibrations are found.
-            None if no calibration is found.
+            `info`
+                OrderedDict from read_file()
+
+        Returns:
+
+            `calibration`
+                * 1D array of size [width] if only one calibration is found.
+                * 2D array of size [NumberOfFrames x width] if multiple calibrations.
+                * None if no calibration is found.
         """
         width = info['DetectorDimensions'][0]
         
@@ -69,20 +64,18 @@ class FILE:
         return None
 
     def parse(file: str) -> typing.Tuple[np.ndarray, OrderedDict]:
-        """
-        Parse a .sif file.
-
-        Parameters
-        ----------
-        file: str
-            Path to a .sif file.
+        """ Parse a .sif file.
         
-        Returns
-        -------
-        tuple: (np.ndarray, OrderedDict)
+        Parameters:
+
+            `file`
+                Path to a .sif file.
+        
+        Returns:
+
             A tuple containing:
-            - A 2D numpy array (channels x 2) with the first element of each row being the wavelength bin and the second being the counts.
-            - An OrderedDict with information about the measurement.
+                * A 2D numpy array (2*channels) with 1st element of row i == wavelengths and 2nd == counts.
+                * An OrderedDict with information about the measurement.
         """
         data, info = read_file(file)
         wavelengths = FILE.extract_calibration(info)
@@ -94,41 +87,31 @@ class FILE:
 
 
     def extract_files_from_folder(path: str, file_extension: str = '.sif') -> typing.List[str]:
-        """
-        Extract files with a specific extension from a folder.
+        """ Extract files with a specific extension from a folder.
 
-        Parameters
-        ----------
-        path: str
-            Path to the folder.
+        Parameters:
+
+            `path`
+                Path to the folder.
+            `file_extension`
+                File extension to filter by (default is '.sif').
         
-        file_extension: str, optional
-            File extension to filter by (default is '.sif').
-        
-        Returns
-        -------
-        list: List[str]
+        Returns:
+
             A list of filenames with the specified extension.
         """
-        return [f for f in os.listdir(path) if f.endswith(file_extension)]
-
-    def extract_positions(files, _pos: int):
-        # Adjust this method to return indices from filenames
-        sep = [file.split('_')[_pos] for file in files]
-        pos = [int(idx.split('.')[0]) for idx in sep]
-        return pos
+        return [f for f in os.listdir(path) if f.endswith(file_extension)].sort()
 
     def extract_info(info: OrderedDict, show_info: str) -> None:
-        """
-        Optionally print the info based on the flag show_info.
+        """ Optionally print the info based on the flag show_info.
 
-        Parameters
-        ----------
-        info: OrderedDict
-            OrderedDict containing the file information.
-        
-        show_info: str
-            String flag to indicate whether to print the info. Should be 'true' to print.
+        Parameters:
+
+            `info`
+                OrderedDict containing the file information.
+            
+            `show_info`
+                String flag to indicate whether to print the info.
         """
         if show_info.lower() == 'true':
             for key, value in info.items():
@@ -136,39 +119,34 @@ class FILE:
 
 
 class MATH:
-    """
-    A utility class for handling mathematical operations on spectral data, including noise reduction,
+    """ A utility class for handling mathematical operations on spectral data, including noise reduction,
     data slicing, and normalization.
 
-    Methods
-    -------
-    gradient_n_sigma(wavelengths: np.ndarray, counts: np.ndarray, sigma: int = 3) -> typing.Tuple[np.ndarray, np.ndarray]
-        Remove spikes from data using a gradient method with n-sigma threshold.
+    Methods:
 
-    slice_window(data: np.ndarray, window: str) -> np.ndarray
-        Parse the data and handle the specified window case.
+        gradient_n_sigma(wavelengths: np.ndarray, counts: np.ndarray, sigma)
+            Remove spikes from data using a gradient method with n-sigma threshold.
 
-    normalize_array(array: np.ndarray) -> np.ndarray
-        Normalize an array to the range [0, 1].
+        slice_window(data: np.ndarray, window: str)
+            Parse the data and handle the specified window case.
+
+        normalize_array(array: np.ndarray)
+            Normalize an array to the range [0, 1].
     """
     def gradient_n_sigma(wavelengths: np.ndarray, counts: np.ndarray, sigma: int = 3) -> typing.Tuple[np.ndarray, np.ndarray]:
-        """
-        Remove spikes from data using a gradient method with n-sigma threshold.
+        """ Remove spikes from data using a gradient method with n-sigma threshold. 
+                    
+        Parameters:
 
-        Parameters
-        ----------
-        wavelengths: np.ndarray
-            Array of wavelength data.
+            `wavelengths`
+                Array of wavelength data.
+            `counts`
+                Array of count data.
+            `sigma` (optional)
+                Number of standard deviations to use for filtering (default is 3).
         
-        counts: np.ndarray
-            Array of count data.
-        
-        sigma: int, optional
-            Number of standard deviations to use for filtering (default is 3).
-        
-        Returns
-        -------
-        tuple: (np.ndarray, np.ndarray)
+        Returns:
+
             A tuple containing filtered wavelength and count data.
         """
         gradients = np.diff(counts)
@@ -184,21 +162,20 @@ class MATH:
 
 
     def slice_window(data: np.ndarray, window: str) -> np.ndarray:
-        """
-        Parse the data and handle the specified window case.
+        """ Parse the data and handle the specified window case.
 
-        Parameters
-        ----------
-        data: np.ndarray
-            Data array to be sliced.
-        
-        window: str
-            Type of windowing to apply. Options are 'reduced', 'narrow' and 'pinched'.
+        Parameters:
+
+            `data`
+                Array to be sliced.
+            `window`
+                `reduced` : removes 10% of entries from head and tail.
+                `narrow`  : 25%
+                `pinched` : 33%
         
         Returns
-        -------
-        np.ndarray
-            The sliced data array.
+
+            The sliced np.ndarray.
         """
 
         if window == 'reduced':

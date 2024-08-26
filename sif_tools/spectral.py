@@ -1,29 +1,28 @@
-"""
-A utility for generating heatmaps from hyperspectral data.
-
-This class provides methods to process a directory of spectral files along with a background file.
-It handles noise reduction, data slicing, and heatmap creation.
-
-Functions:
---------
-`hyperspectrum`:
-    Generates a heatmap from hyperspectral data by processing the files in the specified directory.
-
-`_validate_inputs`:
-    Validates the input directory and background file.
-
-`_get_files`:
-    Retrieves and filters the list of spectrum files in the directory, excluding the background file.
-
-`_process_background`:
-    Processes the background file data.
-
-`_process_files`:
-    Processes each spectrum file and computes adjusted counts after background subtraction.
-
-`_create_heatmap`:
-    Creates a 2D heatmap grid based on the processed pixel values.
-"""
+# A utility for generating heatmaps from hyperspectral data.
+#
+# This class provides methods to process a directory of spectral files along with a background file.
+# It handles noise reduction, data slicing, and heatmap creation.
+#
+# Functions:
+#   hyperspectrum:
+#       Generates a heatmap from hyperspectral data by processing the files in the specified directory.
+#
+#   _validate_inputs:
+#       Validates the input directory and background file.
+#
+#   _get_files:
+#       Retrieves and filters the list of spectrum files in the directory, excluding the background file.
+#
+#   _process_background:
+#       Processes the background file data.
+#
+#   _process_files:
+#       Processes each spectrum file and computes adjusted counts after background subtraction.
+#
+#   _create_heatmap:
+#       Creates a 2D heatmap grid based on the processed pixel values.
+#
+# @Bjørn Funch Schrøder Nielsen
 
 import os
 import numpy as np
@@ -33,35 +32,35 @@ from .utils import MATH, FILE
 
     
 @staticmethod
-def hyperspectrum(directory: str, 
-                  background: str, 
-                  size: tuple[int, int], 
-                  index: int,
-                  reduce_noise=True, 
-                  window='pinched', 
-                  normalize: bool = False):
-    """
-    Generates a heatmap from hyperspectral data.
+def hyperspectrum(directory     : str, 
+                  background    : str, 
+                  size          : tuple[int, int], 
+                  method        : str  = 'integration', # could also be 'max'
+                  window        : str  = 'narrow', # or 'reduced' or 'pinched'
+                  reduce_noise  : bool = True,
+                  normalize     : bool = False):
+    """ Generates a NxM heatmap from hyperspectral data.
 
     Parameters:
 
-    - `directory : str`
-        Directory containing spectrum files.
-    - `background : str`
-        Filename of the background spectrum file.
-    - `size : tuple`
-        Distribution of images. If 25 images taken in 5x5, tuple should be (5,5).
-    - `reduce_noise : bool, optional`
-        Whether to reduce noise in the data. Defaults to True.
-    - `window : str, optional`
-        The window of data to be sliced for plotting. Defaults to 'pinched'.
-    - `normalize : bool, optional`
-        Whether to normalize the hyperspectrum plot data.
+        `directory`
+            Directory containing spectrum files.
+        `background`
+            Filename of the background spectrum file.
+        `size`
+            Image stitching scheme, e.g. 25 datapoints: tuple(5,5)
+        `method`
+            notImplemented
+        `window` (optional)
+            The window of data to be sliced for plotting. Defaults to `narrow`.
+        `reduce_noise` (optional)
+            Reduce extreme noise peaks, using a `N sigma-gradient` approach.
+        `normalize` (optional)
+            Normalize the hyperspectrum plot data.
 
     Returns:
 
-    - `np.ndarray`
-        A 2D array representing the heatmap data.
+        2D array representing the heatmap data.
     """
     try:
         _validate_inputs(directory, background)
@@ -69,13 +68,12 @@ def hyperspectrum(directory: str,
         files = _get_files(directory, background)
         background_data = _process_background(directory, background, window, reduce_noise)
 
-        positions = FILE.extract_positions(files, _pos = index)
         pixels = _process_files(directory, files, background_data, window, reduce_noise)
         
         if normalize:
             pixels = MATH.normalize_array(np.array(pixels))
 
-        heatmap_data = _create_heatmap(size, positions, pixels)
+        heatmap_data = _create_heatmap(size, pixels)
 
         return heatmap_data
 
@@ -84,22 +82,19 @@ def hyperspectrum(directory: str,
 
 @staticmethod
 def _validate_inputs(directory, background):
-    """
-    Validates the input directory and background file.
+    """ Validates the input directory and background file.
 
     Parameters:
 
-    - `directory : str`
-        Directory containing spectrum files.
-    - `background : str`
-        Filename of the background spectrum file.
+        `directory`
+            Directory containing spectrum files.
+        `background`
+            Filename of the background spectrum file.
 
     Raises:
 
-    - `ValueError`
-        If the directory is not valid.
-    - `FileNotFoundError`
-        If the background file is not found in the directory.
+        `ValueError`: directory is not valid.
+        `FileNotFoundError`: background file not in the directory.
     """
     if not os.path.isdir(directory):
         raise ValueError("'directory' parameter has to be a directory, not a file.")
@@ -109,19 +104,17 @@ def _validate_inputs(directory, background):
 
 @staticmethod
 def _get_files(directory, background):
-    """
-    Retrieves and filters the list of spectrum files in the directory, excluding the background file.
+    """ Retrieves and filters the list of spectrum files in the directory, excluding the background file.
 
     Parameters:
 
-    - `directory : str`
-        Directory containing spectrum files.
-    - `background : str`
-        Filename of the background spectrum file.
+        `directory`
+            Directory containing spectrum files.
+        `background `
+            Filename of the background spectrum file.
 
     Returns:
 
-    - `list`
         List of spectrum files excluding the background file.
     """
     files = FILE.extract_files_from_folder(directory)
@@ -130,24 +123,22 @@ def _get_files(directory, background):
 
 @staticmethod
 def _process_background(directory, background, window, reduce_noise):
-    """
-    Processes the background file data.
+    """ Processes the background file data.
 
     Parameters:
 
-    - `directory : str`
-        Directory containing spectrum files.
-    - `background : str`
-        Filename of the background spectrum file.
-    - `window : str`
-        The window of data to be sliced for plotting.
-    - `reduce_noise : bool`
-        Whether to reduce noise in the data.
+        `directory`
+            Directory containing spectrum files.
+        `background`
+            Filename of the background spectrum file.
+        `window`
+            The window of data to be sliced for plotting.
+        `reduce_noise`
+            Whether to reduce noise in the data.
 
     Returns:
 
-    - `tuple`
-        Processed background wavelengths and counts.
+        Processed background wavelengths and counts as tuple.
     """
     background_data, _ = FILE.parse(os.path.join(directory, background))
     background_data = MATH.slice_window(background_data, window=window)
@@ -160,25 +151,23 @@ def _process_background(directory, background, window, reduce_noise):
 
 @staticmethod
 def _process_files(directory, files, background_data, window, reduce_noise):
-    """
-    Processes each spectrum file and computes adjusted counts after background subtraction.
+    """ Processes each spectrum file and computes adjusted counts after background subtraction.
 
     Parameters:
 
-    - `directory : str`
-        Directory containing spectrum files.
-    - `files : list`
-        List of spectrum files to be processed.
-    - `background_data : tuple`
-        Processed background wavelengths and counts.
-    - `window : str`
-        The window of data to be sliced for plotting.
-    - `reduce_noise : bool`
-        Whether to reduce noise in the data.
+        `directory`
+            Directory containing spectrum files.
+        `files`
+            List of spectrum files to be processed.
+        `background_data`
+            Processed background wavelengths and counts.
+        `window`
+            The window of data to be sliced for plotting.
+        `reduce_noise`
+            Whether to reduce noise in the data.
 
     Returns:
 
-    - `list`
         List of pixel values representing adjusted counts for each file.
     """
     bg_wavelengths, bg_counts = background_data
@@ -200,30 +189,31 @@ def _process_files(directory, files, background_data, window, reduce_noise):
     return pixels
 
 @staticmethod
-def _create_heatmap(size, positions, normalized_pixels):
-    """
-    Creates a 2D heatmap grid based on the processed pixel values.
+def _create_heatmap(size, normalized_pixels):
+    """ Creates a 2D heatmap grid based on the processed pixel values.
 
     Parameters:
 
-    - `size : tuple`
-        Distribution of images. If 25 images taken in 5x5, tuple should be (5,5).
-    - `positions : list`
-        List of positions for each file.
-    - `normalized_pixels : np.ndarray`
-        Normalized pixel values representing adjusted counts for each file.
+        `size`
+            Image stitching scheme, e.g. 25 datapoints: tuple(5,5)
+        `normalized_pixels`
+            Normalized pixel values representing adjusted counts for each file.
 
     Returns:
 
-    - `np.ndarray`
         A 2D array representing the heatmap data.
     """
-    max_x, max_y = size
-    heatmap_data = np.zeros((max_y, max_x))
+    max_x, max_y = size  # Unpack the size tuple into dimensions
+    heatmap_data = np.zeros((max_y, max_x))  # Create an empty grid for the heatmap
+    
+    # Ensure the number of normalized pixels matches the total number of grid cells
+    if len(normalized_pixels) != max_x * max_y:
+        raise ValueError(f"Number of normalized_pixels ({len(normalized_pixels)}) does not match size {max_x * max_y}.")
 
-    for idx, count in zip(positions, normalized_pixels):
-        x = (idx - 1) % max_x
-        y = (idx - 1) // max_x
-        heatmap_data[y, x] = count
+    # Fill the heatmap with the normalized pixel values
+    for index, value in enumerate(normalized_pixels):
+        row = index // max_x  # Determine the row index
+        col = index % max_x   # Determine the column index
+        heatmap_data[row, col] = value  # Assign the pixel value to the heatmap
 
     return heatmap_data
