@@ -30,7 +30,7 @@ data = SIFconvert('tests/UnitTest.sif')
 wavelength, count = data[:, 0], data[:, 1]
 ```
 
-![Spectrum]("usage/single spectrum/example_plot.png")
+![Spectrum](usage/single%20spectrum/example_plot.png)
 
 ## Support
 
