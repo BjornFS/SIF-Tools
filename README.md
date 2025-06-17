@@ -30,6 +30,7 @@ data = SIFconvert('tests/UnitTest.sif')
 wavelength, count = data[:, 0], data[:, 1]
 ```
 
+Which can then easily be plotted as a [single spectrum](usage/single%20spectrum/example_code.py):
 ![Spectrum](usage/single%20spectrum/example_plot.png)
 
 ## Support
