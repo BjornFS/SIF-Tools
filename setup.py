@@ -30,9 +30,3 @@ setup(
         ],
     },
 )
-
-#new version:
-## change version number in setup.py Done
-## python setup.py sdist bdist_wheel
-## twine upload dist/* 
-## pip install --upgrade --force-reinstall sif-tools
