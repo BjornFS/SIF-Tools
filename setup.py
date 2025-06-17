@@ -7,10 +7,10 @@ with open('README.md', 'r') as f:
 
 setup(
     name='sif_tools',  
-    version='1.1.12', 
-    author='Bjorn F. Schroder N.', 
-    author_email='Bjornfschroder@gmail.com',  
-    description='A light-weight package for Andor SIF file analysis', 
+    version='2.1.2', 
+    author='Bjorn F. Schroder Nielsen', 
+    author_email='Bjorn@SchroderNielsen.com',  
+    description='A light-weight package for SIF file conversion', 
     long_description=long_description,
     long_description_content_type='text/markdown',
     url='https://github.com/BjornFS/SIF-Tools', 
@@ -22,8 +22,7 @@ setup(
     ],
     python_requires='>=3.6', 
     install_requires=[
-        'numpy',  
-        'scipy',
+        'numpy'
     ],
     entry_points={
         'console_scripts': [
@@ -33,6 +32,7 @@ setup(
 )
 
 #new version:
-## change version number in setup.py
+## change version number in setup.py Done
 ## python setup.py sdist bdist_wheel
 ## twine upload dist/* 
+## pip install --upgrade --force-reinstall sif-tools

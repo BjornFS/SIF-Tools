@@ -280,7 +280,7 @@ def extract_user_text(info):
     del info['user_text']
     return info
 
-def read_file(sif_file, ignore_corrupt=False):
+def parser(sif_file, ignore_corrupt=False):
     """
     Open sif_file and return as np.array.
 
