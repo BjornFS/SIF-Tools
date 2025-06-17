@@ -39,5 +39,4 @@ If you encounter any issues, have suggestions for add-ons, or have questions, fe
 
 ## Authors
 
-- Bjorn Schroder Nielsen
 - Bjorn@SchroderNielsen.com
